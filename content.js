@@ -1,5 +1,5 @@
 let diaryItems = [];
-
+dfdfd;
 // 1.크롬스토리지에서 데이터 불러오는 함수 선언
 function getDiaryItems() {
   // 2. 크롬스토리지에서 데이터 가져오기
