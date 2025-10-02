@@ -1,5 +1,5 @@
 let diaryItems = [];
-dfdfd;
+
 // 1.크롬스토리지에서 데이터 불러오는 함수 선언
 function getDiaryItems() {
   // 2. 크롬스토리지에서 데이터 가져오기
@@ -149,38 +149,64 @@ var options = {
   maximumAge: 0,
 };
 
-function success(pos) {
+async function success(pos) {
   var crd = pos.coords;
 
-  console.log("Your current position is:");
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
+  // console.log("Your current position is:");
+  // console.log(`Latitude : ${crd.latitude}`);
+  // console.log(`Longitude: ${crd.longitude}`);
+  // console.log(`More or less ${crd.accuracy} meters.`);
 
   let latitude = crd.latitude;
   let longitude = crd.longitude;
   let apikey = "ad1edcfd472945a67b705ea331c60586";
 
-  fetch(
+  try {
+    const data = await response.json();
+    const weather = data.weather[0].description;
+    const icon = data.weather[0].icon;
+    const imageUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    console.log(weather);
+    //Math.round() 소수점 버리기
+    const temp = Math.round(data.main.temp);
+    console.log(temp);
+    $(".weather").text(`${weather} ${temp}℃`);
+    $(".weather-icon").attr("src", imageUrl);
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  const response = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apikey}&units=metric&lang=kr
 `
-  )
-    .then((response) => {
-      //onsole.log(response);
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-      const weather = data.weather[0].description;
-      const icon = data.weather[0].icon;
-      const imageUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
-      console.log(weather);
-      //Math.round() 소수점 버리기
-      const temp = Math.round(data.main.temp);
-      console.log(temp);
-      $(".weather").text(`${weather} ${temp}℃`);
-      $(".weather-icon").attr("src", imageUrl);
-    });
+  );
+  const data = await response.json();
+  const weather = data.weather[0].description;
+  const icon = data.weather[0].icon;
+  const imageUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  console.log(weather);
+  //Math.round() 소수점 버리기
+  const temp = Math.round(data.main.temp);
+  console.log(temp);
+  $(".weather").text(`${weather} ${temp}℃`);
+  $(".weather-icon").attr("src", imageUrl);
+
+  //     .then((response) => {
+  //       //onsole.log(response);
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       const weather = data.weather[0].description;
+  //       const icon = data.weather[0].icon;
+  //       const imageUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  //       console.log(weather);
+  //       //Math.round() 소수점 버리기
+  //       const temp = Math.round(data.main.temp);
+  //       console.log(temp);
+  //       $(".weather").text(`${weather} ${temp}℃`);
+  //       $(".weather-icon").attr("src", imageUrl);
+  //     });
 }
 
 function error(err) {
